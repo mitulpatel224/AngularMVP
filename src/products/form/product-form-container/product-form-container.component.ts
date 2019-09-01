@@ -1,6 +1,8 @@
+import { ProductHttpService } from 'src/products/product-http/product-http.service';
+import { Product } from 'src/products/product.model';
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-product-form-container',
@@ -9,24 +11,60 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ProductFormContainerComponent implements OnInit {
 
-  private form;
+  /** Product detail */
+  private product: Product;
+
+  /** Mode of form add/edit */
+  private formMode: 'add' | 'edit' = 'add';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private service: ProductHttpService
   ) {
-    this.form = this.fb.group({
-      id: [''],
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]]
+
+    // Watch over route params for product id
+    this.route.paramMap.subscribe(params => {
+      if (params.has('id')) {
+        const productID = +params.get('id');
+        this.formMode = 'edit';
+        this.getProductDetail(productID);
+      } else {
+        this.product = service.getNewProduct();
+      }
     });
   }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  /**
+   * On cancel changes
+   * @param flag boolean
+   */
+  public onCancelChanges(flag) {
+    this.router.navigate(['/products']);
   }
 
-  onCancelChanges(event) {
+  /**
+   * Update change/ add new product on form updated
+   * @param product product detail
+   */
+  public formUpdated(product) {
+    if (this.formMode === 'edit') {
+      this.service.updateProduct(product);
+    } else {
+      this.service.addNewProduct(product);
+    }
     this.router.navigate(['/products']);
+  }
+
+  /**
+   * Get product detail from http service
+   * @param productID product id
+   */
+  private getProductDetail(productID: Product['id']) {
+    const product = this.service.getProductById(productID);
+    this.product = { ...product };
   }
 
 }

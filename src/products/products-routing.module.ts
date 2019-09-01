@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ProductListContainerComponent } from './list/product-list-container/product-list-container.component';
-import { ProductFormContainerComponent } from './form/product-form-container/product-form-container.component';
+import { RouterModule, Routes } from '@angular/router';
 
+import {
+  ProductFormContainerComponent
+} from './form/product-form-container/product-form-container.component';
+import {
+  ProductListContainerComponent
+} from './list/product-list-container/product-list-container.component';
 
 const routes: Routes = [
   {
@@ -10,9 +14,13 @@ const routes: Routes = [
     component: ProductListContainerComponent
   },
   {
-    path: ':id',
+    path: 'add',
     component: ProductFormContainerComponent
-  }
+  },
+  {
+    path: 'edit/:id',
+    component: ProductFormContainerComponent
+  },
 ];
 
 @NgModule({
