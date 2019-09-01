@@ -1,4 +1,10 @@
-# NgMVP
+# Ng + MVP
+
+Providing the example of using MVP pattern in Angular.
+
+## MVP(Model View Presenter)
+- To provide separation of conserns
+- To make code more scalable, readable, testable, maintainable and performant
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.0.
 
